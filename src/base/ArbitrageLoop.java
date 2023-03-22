@@ -13,18 +13,22 @@ public class ArbitrageLoop<T> {
     }
     
     public Stack<Currency> findArbitrage(Tree<Node<Currency>> t){
-        return findArbitrage(t.root);
+        findArbitrage(t.root);
+        return stack;
     }
     
-    private Stack<Currency> findArbitrage(Node<Currency> node) {
+    private void findArbitrage(Node<Currency> node) {
         if(node.depth == 3 && getProduct() > 1) {
             System.out.println("FOUND SUCCESSFUL");
             found = true;
-            return this.stack;
+            return;
         }else if(node.depth < 3 && !found){
             for(Node<Currency> child : node.getChildren()) {
                 stack.add(child.currency);
                 findArbitrage(child);
+                if(found) {
+                    return;
+                }
                 stack.pop();
             }
         }
